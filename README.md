@@ -140,6 +140,8 @@ $ sudo apt install vim git curl wget htop unzip tree nginx mongodb nodejs npm -y
 
 ## step3.上传代码
 
+**！！打开service/config/index.js，填写自己的微信小程序appid和secretKey。！！**
+
 **WARRING** Linux可脾气没有Windows好，文件别瞎放了，小心Linux....
 
 ![NVF*KU](img/NVFKU.png)
@@ -226,7 +228,7 @@ tip:
 
 当然我想各位应该已经看到了左边这个目录，双击`..`就可以到上一个目录，或者直接在上面的路径框输入想去的路径回车就可以到了（类似于`cd`）。然后直接显示在这里相当于`ls`。
 
-先将需要上传的代码修改好，然后打包成一个`.zip`格式的zip压缩包直接拖拽到空白的地方就可以上传了就可以进行上传。
+先将需要上传的代码**修改好**，然后打包成一个`.zip`格式的zip压缩包直接拖拽到空白的地方就可以上传了就可以进行上传。
 
 <!-- TODO: 上传文件的图片 -->
 
@@ -264,5 +266,199 @@ $ npm run start
 
 好的看到没有什么 红色的ERR! 就是完成运行了。
 
-接下来我们来配置nginx
+## step4.申请HTTPS证书
 
+最为HTTPS加密的最重要的一点就是证书啦，相关的信任链，证书链，非对称加密等可以说是信息安全发展的丰硕成果，虽然你平时不知道，但是他们却在时时刻刻保护你的安全。
+
+证书的类型有很多，我们就申请一个免费的DV证书---[Let’s Encrypt](https://letsencrypt.org/)。
+
+### 配置域名解析
+
+#### freenom用户需要改NameServer
+
+**PS**: 腾讯云域名注册用户跳过这一步！！！
+
+首先打开百度->搜索: 使用dnspod解析freenom
+
+然后找一个靠谱的文章，例如：[使用DNSPod解析Freenom域名 - ssooking - 博客园](https://www.cnblogs.com/ssooking/p/6364639.html)
+
+跟着一步一步走，由于dnspod就是腾讯家的，直接用腾讯云账号直接登陆就好了，然后就可以跟在腾讯云卖域名的小伙伴一起玩耍了。
+
+#### DnsPod解析
+
+打开 [Dnspod官网](https://www.dnspod.cn/)，使用登陆腾讯云的账号登陆。
+
+点击左边的“域名解析”，你就可以看见自己的域名了。
+
+点击你的域名，就可以进入解析管理的页面。
+
+![域名解析](img/域名解析.png)
+
+然后你就会发现他在下面产生了。主机记录，比如我用的就是www，那么一会我的域名就是www.xice.wang。如果是cn，那么就是cn.xice.wang，以此类推。
+
+这样子我们的解析就完成了，想测试一下的可以使用`cmd`自带的工具`nslookup`进行尝试。
+
+Win + R 打开运行，输入 cmd ，回车
+
+输入命令：
+
+```cmd
+nslookup www.xice.wang
+```
+
+就可以看到结果了
+
+#### 获得ID 和 Tocken
+
+![开启tocken](img/开启tocken.png)
+
+![保存Tocken](img/保存tocken.png)
+
+### 安装 acme.sh
+
+切换到root权限
+
+```bash
+$ sudo -i
+```
+![sudo](img/sudo.png)
+
+下载签名工具 [acme.sh](https://acme.sh)
+
+**PS**: cron 默认会随系统安装，但是作为acme.sh的重要依赖，还是手动确认一下安装情况，不装的话等提醒再来也来得及
+
+```bash
+# apt install cron
+# curl  https://get.acme.sh | sh
+```
+
+![安装acme](img/安装acme.png)
+
+安装socat的方式可能也猜到了，就是
+
+```bash
+# apt install socat
+```
+
+当然，不装问题也不大，因为我们采用dns_api的申请证书的方式。
+
+将我们上一步得到的ID 和 Tocken 找出来。一会准备用。
+
+```bash
+# vim ~/.acme.sh/dnsapi/dns_dp.sh
+```
+
+使用vim进行编辑。
+
+![vim](img/vim.png)
+
+关于vim更高级的使用方式请自行学习。
+
+使用上下左右移动光标，到 #DP_Id="1234" 前面的这个井号上面，使用Del键取消注释（就是删掉这个井号。然后往后移动，删除1234，这一行仅仅留下 DP_Id=""，此时按 i 切换到插入模式（右下角显示一个 \-\- INSERT \-\-）在两个引号之间输入你的ID，按ESC退出插入模式。
+
+然后按照上面的步骤输入Tocken。
+
+Tocken太长了，我不想一个一个输入怎么办？研究一下这个界面，怎么复制粘贴。
+
+全部修改完毕之后我们来推出并保存
+
+输入一个 : (就是一个冒号) 进入命令模式(左下角有一个冒号)
+
+输入 q 回车 (q命令就是 保存并退出的意思。)
+
+别的东西就自己探究一下吧。
+
+回到命令行我们来申请证书
+
+```bash
+# ~/.acme.sh/acme.sh --issue -d www.xice.wang --ecc -k ec-384 --dns dns_dp
+```
+
+静静等待两分钟，这个工具会帮你完成所有的事情。
+
+然后你就会看见一坨私钥和告诉你这些文件都保存在哪里。
+
+你的证书就得到了！
+
+## step5.配置nginx
+
+使用之前上传代码的方式，上传nginx的配置文件，如果你喜欢使用vim可以传上去之后再改。
+
+把里面 所有的 <你的域名> 替换成 你的域名 （好像废话。。。
+
+例如我就是用 www.xice.wang 替换他们。
+
+![得到证书](img/得到证书.png)
+
+**PS**：这张截图我申请证书的域名是 xice.wang， 请随机应变。
+
+我们替换的几个地方包括：nginx 的ServerName和证书路径，还有输出的日志什么的。
+
+确认没问题之后我们就把这个配置文件放在正确的位置上。
+
+```bash
+# mv /home/ubuntu/myfunction.conf /etc/nginx/sites-available/
+```
+
+我们又学了一个新命令`mv`就是把前面这个文件移动到后面这里，类似于剪切。如果后面是一个目录则会在这个目录下生成同源文件名的文件，如果后面是一个文件，则会直接覆写。使用请慎重。
+
+前面的位置因人而异，你上传在哪里就在那里。
+
+当然我们可以切换到这个nginx的配置文件下面看个究竟：
+
+```bash
+# cd /etc/nginx
+# ls
+conf.d          koi-win            nginx.conf       sites-enabled
+fastcgi.conf    mime.types         proxy_params     snippets
+fastcgi_params  modules-available  scgi_params      uwsgi_params
+koi-utf         modules-enabled    sites-available  win-utf
+```
+
+我们还需要把这个配置文件放置在sites-enbaled中才会生效，为了避免复制之后文件更改难以同步，所以我门在`sites-enabled`中创建一个“快捷方式”(符号链接)。为什么不直接放到enable中呢？因为我们有时需要暂时关闭某网站，但是又不想彻底删除这个配置文件，所以采用这种方式就可以只删除符号链接就可以了。
+
+```bash
+# ln -s /etc/nginx/sites-available/myfunction.conf sites-enabled/
+```
+
+创建符号链接，注意，源文件一定要写绝对路径，除非一些特别情况，具体情况就可以自行探索和理解，结合相对路径和绝对路径的知识。
+
+然后检测一下配置是否存在问题
+
+```bash
+# nginx -t
+```
+
+应该没有问题，有的话就自己更改吧(:
+
+使用
+
+```bash
+# systemctl reload nginx.ervice
+```
+
+使得 nginx 重新加载配置文件。
+
+## step6.微信小程序
+
+至此 整个服务端都完成了配置，我们开始折腾微信小程序。
+
+修改 app.js 里面的 urlBase
+
+因为我们已经开启了HTTPS服务，并且配置好了证书，所以我们要使用HTTPS协议进行访问
+
+```JS
+urlBase: "https://www.xice.wang"
+```
+
+记得改成你自己的域名呀！
+
+然后就可以进行尝试了。
+
+## step7.运行mongoose后台web管理（提高）
+
+这里单纯的给出一个连接[mongo可视化工具adminMongo安装](https://blog.csdn.net/yzy199391/article/details/80453349)
+
+有兴趣的可以尝试自己运行一下，然后自行查阅相关信息，配置nginx反向代理什么的。祝你好运！
+
+**小声比比**： 趁着现在服务器上没什么东西，重装起来没什么包袱，大胆折腾！不行重装！

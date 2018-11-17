@@ -1,0 +1,20 @@
+<form bindsubmit="formSubmit">
+  <view class='form'>
+    <view class='input'>
+      <view>input</view>
+      <input name="msg" value='{{input}}' class='input-box' placeholder="please input here" />
+    </view>
+    <view>
+      <button class='button' formType="submit">{{but}}</button>
+      <button class='button' bindtap='getOpenId'>获取OpenId</button>
+    </view>
+    <view class='input'>
+      <view>从数据库读取目标记录</view>
+      <text>{{record}}</text>
+    </view>
+    <view>
+      <button class='button' bindtap='read'>读取最新一条</button>
+      <button class='button' bindtap='readmore'>读取所有并排序</button>
+    </view>
+  </view>
+</form>
