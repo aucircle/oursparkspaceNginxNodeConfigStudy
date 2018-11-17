@@ -1,0 +1,27 @@
+{
+  "name": "service",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha",
+    "start": "bash run_server.sh start",
+    "stop": "bash run_server.sh stop",
+    "restart": "echo restarting",
+    "dev": "node main.js"
+  },
+  "keywords": [],
+  "author": "Xice <admin@xice.wang>",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "mongoose": "^5.3.12",
+    "morgan": "^1.9.1",
+    "request": "^2.88.0"
+  },
+  "devDependencies": {
+    "assert": "^1.4.1",
+    "supertest": "^3.3.0"
+  }
+}
