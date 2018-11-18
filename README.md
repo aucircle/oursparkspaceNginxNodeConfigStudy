@@ -36,7 +36,7 @@
 
 整体请求流程大概是这样的：
 
-1. 用户点击按钮出发事件 @显示层
+1. 用户点击按钮触发事件 @显示层
 2. js文件调用wx.request @数据逻辑层
 3. 微信小程序底层开始建立TCP连接，发送HTTP报文 @微信小程序底层
 4. 后台Nginx(是一个高性能的HTTP和反向代理服务)解析HTTP请求并转发给Nodejs处理 @Nginx
@@ -142,7 +142,7 @@ $ sudo apt install vim git curl wget htop unzip tree nginx mongodb nodejs npm -y
 
 **！！打开service/config/index.js，填写自己的微信小程序appid和secretKey。！！**
 
-**WARRING** Linux可脾气没有Windows好，文件别瞎放了，小心Linux....
+**WARNING** Linux可脾气没有Windows好，文件别瞎放了，小心Linux....
 
 ![NVF*KU](img/NVFKU.png)
 
@@ -439,7 +439,33 @@ koi-utf         modules-enabled    sites-available  win-utf
 
 使得 nginx 重新加载配置文件。
 
-## step6.微信小程序
+# 本地开发环境
+
+## step1.运行MongoDB
+
+参考之前的教程，保证自己的MongoDB正在运行。
+
+## step2.运行node服务器
+
+进入service目录，使用
+
+```cmd
+npm run dev
+```
+
+看见“server is listening on 8080”没有什么错误就是运行好了。
+
+如果有兴趣，在运行之前运行
+
+```cmd
+npm test
+```
+
+看看测试样例，具体的测试样例可以在test文件夹修改。
+
+# 前端微信小程序
+
+## step1.微信小程序
 
 至此 整个服务端都完成了配置，我们开始折腾微信小程序。
 
@@ -452,6 +478,10 @@ urlBase: "https://www.xice.wang"
 ```
 
 记得改成你自己的域名呀！
+
+如果没有配置https仅仅是在本地跑的服务，注意使用http协议加端口号
+
+类似于 http://127.0.0.1:8080
 
 然后就可以进行尝试了。
 

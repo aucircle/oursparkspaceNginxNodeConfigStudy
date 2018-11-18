@@ -13,7 +13,7 @@ module.exports = function(req,res,next){
             next();
         }else{
             rec.body = JSON.parse(rec.body);
-            if(rec.body.errcode == 0){
+            if(!rec.body.errcode){
                 let newUser = await db.user.addUser(rec.body.openid, res['session_key']);
                 if(newUser){
                     res.writeHead(200, { "Content-Type": "application/json;charset=utf-8" });

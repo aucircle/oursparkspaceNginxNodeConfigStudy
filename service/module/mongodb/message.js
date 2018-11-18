@@ -1,9 +1,9 @@
 let Schema = require('mongoose').Schema
-let massage = new Schema({
+let message = new Schema({
     commit: String,
     uploadDate: Date
 })
-massage.static('getTheLastOne', function(){
+message.static('getTheLastOne', function(){
     return new Promise((rec, rej) => {
         this.find({}).sort({'_id': -1}).limit(1).exec((err,doc)=>{
             if(err)rej(err);
@@ -11,7 +11,7 @@ massage.static('getTheLastOne', function(){
         })
     })
 })
-massage.static('newMassage',function(msg){
+message.static('newmessage',function(msg){
     return new Promise((rec, rej)=>{    
         let newMsg = new this({
             commit: msg,
@@ -23,7 +23,7 @@ massage.static('newMassage',function(msg){
         })
     })
 })
-massage.static('getTheListSortWithCommit', function(){
+message.static('getTheListSortWithCommit', function(){
     return new Promise((rec, rej) => {
         this.find({}).sort({'commit': 1}).exec((err,docs)=>{
             if(err)rej(err);
@@ -40,4 +40,4 @@ massage.static('getTheListSortWithCommit', function(){
         })
     })
 })
-module.exports = massage;
+module.exports = message;

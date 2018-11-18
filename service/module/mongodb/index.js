@@ -1,5 +1,5 @@
 let mongoose = require('mongoose');
-let massage = require('./massage');
+let message = require('./message');
 let user = require('./user')
 
 var option = {
@@ -12,10 +12,10 @@ var option = {
 
 mongoose.connect(global.config.mongoURL, option);
 
-let massages = mongoose.model("massage", massage);
+let messages = mongoose.model("message", message);
 let users = mongoose.model("user",user);
 
 module.exports = {
-    massage: massages,
+    message: messages,
     user: users
 }
