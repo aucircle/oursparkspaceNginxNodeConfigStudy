@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha",
+    "status": "bash run_server.sh status",
     "start": "bash run_server.sh start",
     "stop": "bash run_server.sh stop",
     "restart": "echo restarting",

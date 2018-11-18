@@ -1,7 +1,6 @@
 #! /bin/bash
 if [ $1 == "start" ];then
-touch log/out.log
-nohup node main.js 2>&1 | xargs -L1 -I{} bash -c "echo \$(date +'%x %T') '{}'" | tree log/out.log &
+nohup node main.js 2>&1 | xargs -L1 -I{} bash -c "echo \$(date +'%x %T') '{}'" | tee log/out.log &
 echo "$!" > run/pid #将上一个后台进程写入到pid文件中
 elif [ $1 == "stop" ];then
 kill `cat run/pid`
