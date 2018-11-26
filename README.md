@@ -71,7 +71,21 @@
 
 ## step2.运行node服务器
 
-进入service目录，使用
+进入service目录(这里使用一个cd命令 `cd service` 更多关于cd命令的使用请百度自行学习)，使用
+
+```cmd
+npm install
+```
+
+安装所需要的依赖。
+
+在启动服务器运行之前运行测试命令，看看你们的设置是否完善。
+
+```cmd
+npm test
+```
+
+> 看看测试样例，具体的测试样例可以在test文件夹修改。
 
 ```cmd
 npm run dev
@@ -79,13 +93,10 @@ npm run dev
 
 看见“server is listening on 8080”没有什么错误就是运行好了。
 
-如果有兴趣，在运行之前运行
+**PS:** 在真正的使用中NodeJs通常需要把各种不同的功能分割打包，如果你觉得这个分别防止的Nodejs文件不是很好理解可以去`service-pkg`这个文件夹下的app.js就是单文件版的，方便研究各种逻辑。
 
-```cmd
-npm test
-```
+使用方式和上面完整版的有所不同，使用方式就是“安装依赖`npm install`” 和 “运行 `node app.js`”
 
-看看测试样例，具体的测试样例可以在test文件夹修改。
 
 # 前端微信小程序
 
@@ -105,14 +116,19 @@ urlBase: "https://www.xice.wang"
 
 如果没有配置https仅仅是在本地跑的服务，注意使用http协议加端口号
 
+**PS:** 关于HTTP和HTTPS的区别欢迎给位去通过百度进行一些自学。
+
 类似于 http://127.0.0.1:8080
 
 然后就可以进行尝试了。
 
-## step7.运行mongoose后台web管理（提高）
+# 反馈
 
-这里单纯的给出一个连接[mongo可视化工具adminMongo安装](https://blog.csdn.net/yzy199391/article/details/80453349)
+## 石墨文档
 
-有兴趣的可以尝试自己运行一下，然后自行查阅相关信息，配置nginx反向代理什么的。祝你好运！
+可以使用石墨文档进行反馈
+[从云开发到nodejs](https://shimo.im/docs/1IB7aZCatlQcsXAK/)
 
-**小声比比**： 趁着现在服务器上没什么东西，重装起来没什么包袱，大胆折腾！不行重装！
+## issue
+
+使用Github自带的[issue](https://github.com/xiaokeji/oursparkspaceNginxNodeConfigStudy/issues)提出问题。
