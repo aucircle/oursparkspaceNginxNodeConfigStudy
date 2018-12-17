@@ -91,7 +91,7 @@ Page({
             console.log(rec.data);
             if (rec.data.code == 200)
               wx.showModal({
-                title: '成功获得openid',
+                title: '成功获得openid\n'+rec.data.msg,
                 content: '请后台查看'
               });
             else

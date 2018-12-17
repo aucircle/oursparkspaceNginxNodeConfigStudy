@@ -17,7 +17,7 @@ module.exports = function(req,res,next){
                 let newUser = await db.user.addUser(rec.body.openid, res['session_key']);
                 if(newUser){
                     res.writeHead(200, { "Content-Type": "application/json;charset=utf-8" });
-                    res.end(JSON.stringify({code: 200, msg: "添加用户成功"}));
+                    res.end(JSON.stringify({code: 200, msg: "添加用户成功,OpenID是:" + rec.body.openid}));
                     next();
                 }else{
                     res.writeHead(200, { "Content-Type": "application/json;charset=utf-8" });
