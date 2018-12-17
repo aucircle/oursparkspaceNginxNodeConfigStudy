@@ -1,7 +1,13 @@
+/**
+ * 测试模块
+ */
+// 覆盖部分配置
 global.config = {
     mongoURL: "mongodb://127.0.0.1:27017/cloudtest"
 }
+// 引入主服务
 var main = require('../main')
+// 引入测试用模块
 var supertest = require('supertest');
 // 看下面这句，这是关键一句。得到的 request 对象可以直接按照
 // superagent 的 API 进行调用
@@ -14,15 +20,15 @@ describe('test/main.test.js', function () {
     it('should can inset a msg', function (done) {
         let mongoose = require('mongoose');
         // mongoose.connect(global.config.mongoURL)
-        mongoose.connection.dropDatabase()
+        mongoose.connection.dropDatabase() // 清空测试数据
             .then(()=>{
-                request.post('/addMsg')
-                    .send({ msg: "2333" })
-                    .expect(200)
-                    .end(function (err, res) {
+                request.post('/addMsg') // 向 addMsg 发送请求
+                    .send({ msg: "2333" }) // 具体内容是
+                    .expect(200) // 期望返回的HTTP状态码是 200
+                    .end(function (err, res) { // 结束之后调用
                         if (err) throw err;
                         assert(res.body.msg == "添加成功")
-                        done();
+                        done(); // 这个测试项目结束
                     })
             })
     });
