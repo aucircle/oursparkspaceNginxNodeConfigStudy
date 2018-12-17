@@ -86,8 +86,8 @@
 
 > **Tag：** `npm install` 命令只有一个用处就是安装包，在npm看来所有的带`package.json`的文件夹都是一个包，不同的包和包之间是依赖关系，这条命令有两个用法，带参数和不带参数。先说带参数，例如：`npm install mongoose` 就是安装一个mongoose的包，我们在一个空文件夹中运行会看到一些错误信息类似：
 >
-> ![直接npminstall的警告](img\npminstall的警告.png)
-
+> ![直接npminstall的警告](img/npminstall的警告.png)
+> 
 > 这些警告就是说现在执行npm的位置并不是一个包，因为找不到`package.json`，而且这个是不会自动生成的。如果需要可以使用`npm init`命令初始化一个包。
 > 
 > 下面我们要说的不带参数的`npm install`其实就是安装当前目录下的包，没有`package.json`的目录下是没有办法直接执行`npm install`的。
